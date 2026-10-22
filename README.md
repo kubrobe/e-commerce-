@@ -67,4 +67,3 @@ Product  1 ---- * OrderItem
 ```
 
 `order_items` stores the purchased product name and price at checkout so historical orders remain accurate even if the catalog changes later.
-# e-commerce-
