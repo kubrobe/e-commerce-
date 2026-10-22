@@ -1,9 +1,0 @@
-# Pass the Authorization header through to PHP (Apache + CGI/FastCGI setups strip it by default)
-SetEnvIf Authorization "(.+)" HTTP_AUTHORIZATION=$1
-
-# Optional pretty URLs: /api/products instead of /api/index.php/products
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ index.php [L]
-</IfModule>
