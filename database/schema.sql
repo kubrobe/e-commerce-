@@ -103,6 +103,16 @@ CREATE TABLE order_items (
   INDEX idx_order_items_order (order_id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE api_tokens (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_used_at TIMESTAMP NULL,
+  CONSTRAINT fk_api_tokens_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_api_tokens_user (user_id)
+) ENGINE=InnoDB;
+
 INSERT INTO categories (name, slug) VALUES
 ('Electronics', 'electronics'), ('Home & Living', 'home-living'), ('Fashion', 'fashion'), ('Books', 'books');
 

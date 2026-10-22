@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.ShopSphere" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#173B5E</item>
+    </style>
+</resources>

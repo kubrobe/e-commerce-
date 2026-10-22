@@ -47,6 +47,42 @@ Two demo coupons are added during the upgrade: `WELCOME10` (10% off orders of $3
 
 The defaults in `config.php` match a standard XAMPP MySQL setup (`root` with no password). Change them if your local database differs.
 
+## Android app (Kotlin + Jetpack Compose)
+
+The `android/` folder is a native Android app for customers. It talks to the PHP backend through the JSON API in `api/`.
+
+**Features:** browse, search, category filter and sorting; product details with ratings; account sign-up/sign-in; a cart that is priced by the server; promo codes; checkout with a delivery address; order history and status; wishlist; and writing reviews. Admin tools stay on the website.
+
+### Backend setup for the app
+
+1. Existing database? Import `database/upgrade_v3.sql` once in phpMyAdmin (it adds the `api_tokens` table). A fresh install of `database/schema.sql` already includes it.
+2. Keep the project at `C:\xampp\htdocs\shopsphere` so the API is at `http://localhost/shopsphere/api/index.php/`.
+
+### Run the app
+
+1. Open the `android/` folder in Android Studio (Koala or newer) and let Gradle sync.
+2. Emulator: it works as-is (`10.0.2.2` is the emulator's address for your computer). Real phone on the same Wi-Fi: add this line to `android/gradle.properties` using your computer's LAN IP:
+   `shopsphere.apiBaseUrl=http://192.168.1.50/shopsphere/api/index.php/`
+3. Press Run. Debug builds allow plain `http`; use an `https` API URL for release builds.
+
+### API reference
+
+Base URL: `/api/index.php/`. Requests and responses are JSON. Authenticated calls send `Authorization: Bearer <token>`.
+
+| Method | Path | Notes |
+|---|---|---|
+| POST | `auth/register`, `auth/login` | Return `{token, user}` |
+| POST | `auth/logout` | Revokes the token |
+| GET | `me` | Current user |
+| GET | `categories` | |
+| GET | `products?q=&category=&sort=` | `sort`: `newest`, `price_asc`, `price_desc`, `name` |
+| GET | `products/{id}` | Product, reviews, `wishlisted` |
+| POST | `products/{id}/reviews` | `{rating, comment}` (one review per user, editable) |
+| POST | `cart/quote` | `{items:[{product_id, quantity}], coupon_code}` returns server-side prices, discount and warnings |
+| POST | `orders` | `{items, coupon_code, shipping_address}` runs the same transactional checkout as the website |
+| GET | `orders` | The signed-in customer's orders |
+| GET / PUT / DELETE | `wishlist`, `wishlist/{productId}` | |
+
 ## Suggested proposal summary
 
 **Title:** ShopSphere: E-Commerce Product Catalog and Order Management System
